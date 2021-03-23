@@ -1,0 +1,136 @@
+%             AIA Server API           %
+%              Interface v1            %
+% Copyright (c) 1995 - 2021 Gansgruppe %
+%--------------------------------------%
+%    LICENSED UNDER BSD 3 SINCE 2010   %
+%--------------------------------------%
+% RELEASE: 2018, DOWNLOADED:2021,      %
+% LATEST RELEASE: v2                   %
+%--------------------------------------%
+
+% This is an experimental release, it does not contain all functions/fields/structs, in attempt to compact code and optimize execution. %
+
+% BASED OFF LEGACY CODE BASE AT teiwaz/a/lvl2/source/legacy %
+%-----------------------------------------------------------%
+
+% Set Language Version to 2, so that functions/structs %
+% can be implemented in AIA for easy maintainability   %
+LNG_VER 2
+
+% API Interface API (STD API, provided by processer) %
+REQ_API $2
+
+API_REG $ff
+
+% FIELDS %
+
+API_EXP API_FLD $0 SER_CLI
+API_EXP API_FLD $1 SER_KEY_REQ
+
+% Signifies if an error was thrown %
+API_EXP API_FLD $2 SER_ERR
+% Error Message/Name %
+API_EXP API_FLD $3 SER_ERR_NM
+% Signifies if last error is recovarable %
+API_EXP API_FLD $5 SER_ERR_RECOV
+
+API_INTERN API_FLD $6 SER_NCLI
+
+% "Structs" %
+
+% Server Socket, points to parent languages socket %
+API_EXP API_STRUCT $0 SER_SOC
+;;START
+	API_FLD $0 IP
+	API_FLD $1 PORT
+	API_FLD $2 KEY
+;;END
+
+API_EXP API_STRUCT $1 SER_CLI_STRUCT
+;;START
+    % Clients ID %
+	API_FLD $0 ID
+	
+	% Pointer to client thread %
+	API_FLD $1 CLI_THR_POINT
+	
+	% Clients IP Adress %
+	API_FLD $2 CLI_IPA
+;;END
+
+% Functions %
+% Client acceptor, primary part of implementation is error handling %
+API_EXP API_FUNC $0 SER_ACP_CLI:: TAKES SER_SOC AS SOC
+;;START
+	API_PAR_LANG INTERFACE "acceptClient" GIVES SOC
+	
+	CMP API_PAR_LANG GET "ERROR"
+	JE ERROR
+	;;RETURN
+	
+	:Error
+	API_SET SER_ERR $1
+	API_SET_ERR_NM API_PAR_LANG GET "ERROR_NAME"
+	API_SET SER_ERR_RECOV API_PAR_LANG GET "ERROR_RECOVERABLE"
+	;;RETURN
+;;END
+
+% Sends message to currently selected client %
+API_EXP API_FUNC $1 SER_SND:: TAKES SER_MSG AS MSG :OR: API_FLD AS MSG
+;;START
+	API_PAR_LANG INTERFACE "sendMessage" GIVES API_FLD SER_CLI, MSG
+	
+	CMP API_PAR_LANG GET "ERROR"
+	JE ERROR
+	;;RETURN
+	
+	:Error
+	API_SET SER_ERR $1
+	API_SET_ERR_NM API_PAR_LANG GET "ERROR_NAME"
+	API_SET SER_ERR_RECOV API_PAR_LANG GET "ERROR_RECOVERABLE"
+	;;RETURN
+;;END
+
+% Sets current selected client %
+API_EXP API_FUNC $2 SER_SLC_CLI:: TAKES SER_CLI_STRUCT AS CLI
+;;START
+	API_SET SER_CLI CLI_ID
+;;END
+
+API_EXP API_FUNC $3 SER_REG_CTH:: TAKES SER_CLI AS CLI
+;;START
+	API_PAR_LANG INTERFACE "registerClientThread" GIVES API_FLD CLI
+	
+	CMP API_PAR_LANG GET "ERROR"
+	JE ERROR
+	;;RETURN
+	
+	:Error
+	API_SET SER_ERR $1
+	API_SET_ERR_NM API_PAR_LANG GET "ERROR_NAME"
+	API_SET SER_ERR_RECOV API_PAR_LANG GET "ERROR_RECOVERABLE"
+	;;RETURN
+;;END
+
+% Cleanup %
+API_EXP API_FUNC $ff API_CLEANUP
+;;START
+	CMP SER_NCLI 0
+	JE :Exit
+	JNE :ClearClients
+	
+	:ClearClients
+	API_PAR_LANG INTERFACE "disconectAll"
+	API_PAR_LANG INTERFACE "stopThreads"
+	API_PAR_LANG INTERFACE "confirm"
+	JMP :Exit
+	
+	:Exit
+	API_DESTROY_FIELD _*_
+	API_DESTROY_STRUCTS _*_
+	API_REM _*_
+	;;RETURN
+	
+;;END
+
+46 49 4c 45 5f 41 50 49 3b 20 56 45 52 53 49 4f 4e 20 31 3b 20 4c 41 4e 47 55 41 47 45 20 56 45 52 53 49 4f 4e 20 32 32 20 50 4f 52 54 3b 20 41 55 54 48 4f 52 3a 20 41 4c 41 4e 47 4f 4f 53 45 3b 20 53 49 47 4e 41 54 55 52 45 3a 20 6a 64 66 69 31 31 31 41 38 61 39 3b 20 49 44 3a 20 46 44 3b 20 36 34 2f 33 32 42 49 54 3bvulnerabilities
