@@ -1,0 +1,29 @@
+' info.set file for AIA 2.2 (LTS)
+' This file contains required settings for the gc api and users
+' Author: 0xffea
+' Updated: 23.03.2021 23:25 CEST
+
+ver 1
+
+' Interperter / JITC settings
+aia:
+version 2.2
+jitc_order "spec_in_file"
+minram 2g
+;
+
+' API interface settings
+api:
+version 1.2
+fgroup "*_gc.aia"
+id 0xfc
+;
+
+' List of required apis
+apis:
+item1 "advancedAL"
+item2 "advancedGL"
+item3 "divineProcess"
+item4 "neural"
+loadFor "*"
+;

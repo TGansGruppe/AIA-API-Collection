@@ -1,0 +1,24 @@
+; This file is used for debugging
+; the new GC API. Modify as you
+; please, but do not commit changes,
+; the file on the github repository
+; should remain for normal testing.
+
+REQ_API $fc ; Load the API again to be sure, 2.2 is a bit buggy when it comes to centralised api requires, outside of interfaces.
+
+GC_LOG GC_VERBOSE ; Set the logging to verbose
+
+SOUND_INIT $0 $0 $8 ; Initialise Sound Generator/Converter for port 0, device 0 with volume at ~50%
+GRAPH_INIT $0 $1 $780 $438 ; Initialise the Image Generator/Converter for port 0, device 1 with 1080p resolution
+
+SOUND_TONE $1b8 $0 $f ; Play a 440hz tone for 16 seconds
+GRAPH_TEST GRAPH_SQUARES ; Test the graphics with the standard squares
+
+DIVINE $3 ; Set divine processor to 3
+DIVINE_LOG DIVINE_SPEED ; Activate Speed test for divine processors
+ENTER_DIVINE ; Test interaction speed with no-ops
+ff ff ff ff ff ff ff ff ff ff ff
+EXIT_DIVINE
+
+DIVINE_CLEANUP
+GC_SHUTDOWN

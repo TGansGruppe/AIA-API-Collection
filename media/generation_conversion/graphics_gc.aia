@@ -1,0 +1,13 @@
+API_EXP_BEGIN FLDS
+
+$0 WIDTH 	; Graphics Width
+$1 HEIGHT	; Graphics Height
+$2 WINID	; Window ID
+
+API_EXP_END
+
+API_EXP_BEGIN FUNC
+
+EXPOSE_FROM_NATIVE ; Temporary, native code will be attempted to be ported for better maintainability
+
+API_EXP_END
