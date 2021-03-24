@@ -25,5 +25,6 @@ item1 "advancedAL"
 item2 "advancedGL"
 item3 "divineProcess"
 item4 "neural"
+item5 "newFile"
 loadFor "*"
 ;
