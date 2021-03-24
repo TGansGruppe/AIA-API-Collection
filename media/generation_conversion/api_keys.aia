@@ -1,0 +1,47 @@
+; Keys with repsective values for the GC API
+; This file should be specified in AIA startup to register keys in JITC/Interpreter
+; inorder for it to replace the keys with according values
+; Author: 0xffea
+
+AIA_COMPILER_KEYS ; Signify that this is not a program/api file, rather a list of keys and numeric values
+
+START GC
+
+; Universal Keys
+GC_NONE #0
+
+; Logging
+GC_VERBOSE #1
+GC_ERRORS #2
+GC_FATAL #3
+GC_WARNINGS #4
+GC_INFO #5
+
+; Errors
+GC_ERROR #0
+GC_INIT_ERROR #1
+GC_SHUTD_ERROR #2
+GC_DEVICE_ERROR #3
+
+END
+
+START GRAPHICS
+
+; Graphic Programs
+GC_SQUARES #0
+GC_TEXTS #1
+GC_COMBINE #2
+
+END
+
+START SOUNDS
+END
+
+START DIVINE
+
+; Logging
+DIVINE_VERBOSE #0
+DIVINE_SPEED #1
+DIVINE_IPS #2
+
+END
