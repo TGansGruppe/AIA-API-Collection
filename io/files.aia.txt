@@ -17,6 +17,8 @@
 ; Port for file system api, permissions
 ; given at jitc or interpreter startup
 
+NM newFile
+
 LNG_VER 2$2			; Version 2.2 of AIA ($ represents beginning of minor version)
 REQ_API $f			; Load "API" API
 API_REG $fd			; Normal Filesystem API id should be reserved, to prevent errors
