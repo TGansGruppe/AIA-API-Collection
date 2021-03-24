@@ -1,15 +1,67 @@
 API_INTERFACE
+API_NAME GRAPH
 
 API_EXP_BEGIN FLDS
 
-$0 WIDTH 	; Graphics Width
-$1 HEIGHT	; Graphics Height
-$2 WINID	; Window ID
+$0 WIDTH 	 ; Graphics Width
+$1 HEIGHT  ; Graphics Height
+$2 WINID	 ; Window ID (debugging/testing purposes)
+$3 DISPLAY ; Display struct for actual display
+
+API_EXP_END
+
+APIX_EXP_BEGIN STRUCT
+
+$0 DISPLAY::
+  $0 WIDTH
+  $1 HEIGHT
+  $2 PORT
+  $3 DEVICE
+  $4 REFRESH
+END
+
+$1 ANIMATION::
+  $0 TYPE    ; Type of animation, all types are specified in the keys file
+  $1 LENGTH  ; Length in Milliseconds
+  $2 SLENGTH ; Length in Seconds (Utility)
+  $3 TARGET  ; Target display for animation
+END
 
 API_EXP_END
 
 API_EXP_BEGIN FUNC
 
 EXPOSE_FROM_NATIVE ; Temporary, native code will be attempted to be ported for better maintainability
+
+$0 INIT:: INT AS PORT, INT AS DEVICE, INT AS WIDTH, INT AS HEIGHT
+  ; Note for other developers, AIA suddendly requires an "§" before assigning a "variable". But for some reason only in this file??
+  ; - 0xffe9
+  §WINID INTERFACE "createWin" GIVES WIDTH, HEIGHT
+  
+  CRT DISPLAY TO §DISPLAY    ; Create new instnace of DISPLAY struct and assign it to the exposed field
+  
+  §DISPLAY:WIDTH WIDTH
+  §DISPLAY:HEIGHT HEIGTH
+  
+  INTERFACE "initDrivers" GIVES DISPLAY, WINID  ; Initialise Drivers
+  $0 RETURN                                     ; Create variable for return code
+  §RETURN INTERFACE "checkErrors"               ; Assign variable the value of checkErrors
+  
+  RET RETURN
+END
+
+$1 SHUTDOWN::
+  INTERFACE "destroyWindow" GIVES WINID
+  INTERFACE "disconnectDisp" GIVES DISPLAY
+  INTERFACE "shutdownDrivers"
+END
+
+; Used to load RSCRIPTS (Render Scripts), which are lua files
+; Returns the ID required for unloading Rscripts or executing them
+$2 LOAD_RSCRIPT:: STR AS FILE
+  $0 FILE FILE_OPEN §FILE
+  $1 ID INTERFACE "registerRScript" GIVES §FILE
+  RET ID
+END
 
 API_EXP_END
