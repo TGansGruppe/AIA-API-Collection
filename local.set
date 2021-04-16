@@ -1,0 +1,45 @@
+' local.set file for AUTO-API-LOADER
+' Author: 0x1905
+' Created: 16.04.2021 19:30
+
+ver 1
+
+' Loader settings
+loader:
+version 1.0
+load_order "table#apis"
+execdir "./run"
+api_cdump_dir "./run/api_cdump"
+;
+
+' Api List
+apis:
+row 1
+item1 "advancedAL"
+item2 "/aia/stdlib/algl/al.jar"
+item3 "/aia/stdlib/algl/al.aia"
+item4 "/aia/stdlib/algl/al.set"
+row 2
+item1 "advancedGL"
+item2 "/aia/stdlib/algl/gl.jar"
+item3 "/aia/stdlib/algl/gl.aia"
+item4 "/aia/stdlib/algl/gl.set"
+row 3
+item1 "divineProcess"
+item2 "/aia/dev/div/proc/divineProcess.jar"
+item3 "/aia/dev/div/proc/divineProcess.aia"
+item4 "/aia/dev/div/proc/divineProcess.aset"
+item5 "/aia/dev/div/proc/manager.aia"
+item6 "/aia/dev/div/proc/chip.aia"
+item7 "combine 5 6 /s /aia/dev/div/proc/combine.set"
+row 4
+item1 "neural"
+item2 "/aia/dev/neural/neural.jar"
+item3 "/aia/dev/neural/neural.aia"
+item4 "/aia/dev/neural/neural.set"
+row 5
+item1 "file"
+item2 "/aia/stdlib/io/file.jar"
+item3 "/aia/stdlib/io/file.aia"
+item4 "/aia/stdlib/io/file.set"
+;
